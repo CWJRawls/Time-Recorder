@@ -28,7 +28,11 @@ class Swimmer{
 	void addTime(Record r); //add a time to the swimmer
 	void removeTime(int r); //remove a time from the list
 	int getNumTimes() {return times.size();} //function to get the number of times for writing to files
-	
-	
-	
+	//functions for sorting help
+	string getFName() {return fname;}
+	string getLName() {return lname;}
+	//function for printing data to the screen
+	void printData() {cout << lname << ", " << fname << " : " << age;}
 };
+
+bool sortSwimmer(const Swimmer &sa, const Swimmer &sb);

@@ -29,7 +29,7 @@ class Record{
 	int getSec() {return secs;}
 	int getMili() {return milis;}
 	//functions for data presentation
-	void printData() {cout << event << " : \t" << time << "\t" << date;}
+	void printData();
 	//function to present time as a string for file storage
 	string getTime() {return time;}
 	string getDate() {return date;}

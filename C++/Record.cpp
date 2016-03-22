@@ -199,6 +199,22 @@ void Record::setDate(string d)
 	post(out);
 }
 
+void Record::printData()
+{
+	if(e < 5)
+	{
+		cout << event << "\t" << time << "\t" << date;
+	}
+	else if(e == 5)
+	{
+		cout << event << "\t\t\t" << time << "\t" << date;
+	}
+	else
+	{
+		cout << event << "\t" << time << "\t" << date;
+	}
+}
+
 //NON-MEMBER FUNCTIONS
 bool sortTime(const Record &ra, const Record &rb) //method to help vector sorting of times
 {

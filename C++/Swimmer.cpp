@@ -46,3 +46,30 @@ void Swimmer::removeTime(int r) //remove a time and then sort
 	sortTimes();
 	post("Time Removed");
 }
+
+bool sortSwimmer(const Swimmer &sa, const Swimmer &sb)
+{
+	int a = sa.getLName().compare(sb.getLName());
+	
+	if(a < 0)
+	{
+		return true;
+	}
+	else if(a == 0)
+	{
+		a = sa.getFName().compare(sb.getFName());
+		
+		if(a < 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else
+	{
+		return false;
+	}
+}
