@@ -11,7 +11,10 @@ using namespace std;
 #include "Swimmer.h"
 #include "Record.h"
 #include "FileHandler.h"
-#include "tinyfiledialogs.h"
+#include "nfd/include/nfd.h"
+#include "nfd/common.h"
+#include "nfd/nfd_common.h"
+#include "nfd/nfd_cocoa.m"
 
 #define VERBOSE 1 //sets whether or not to post debugging
 
@@ -20,7 +23,13 @@ bool end_run = false;
 //boolean controlling whether to close a team file
 bool close_file = false;
 
-string vNum = "0.1a";
+string vNum = "0.1a\t build: 03222016";
+
+string roster_filt = "txt"; //file type filter for opening roster files as well as saving time sheets.
+
+string team_filt = "tme,txt"; //file type filter for opening and saving team time data
+
+
 
 //forward declare functions
 void post();
@@ -28,7 +37,8 @@ void displayStartingOptions();
 void printOptionHelp();
 int getIntegerInput(); //function for type checked integer input from cin
 char getCharInput(); //function to get only the first char from cin
-void printVNum();
+void printVNum(); //function to print the version number
+string getRosterFile();
 
 int main()
 {
@@ -151,3 +161,21 @@ void printVNum()
 {
 	cout << "Version : " << vNum;
 }
+
+string getRosterFile()
+{
+	char const* filt = roster_filt.c_str();
+	
+	nfdchar_t *filter = (nfdchar_t*) filt;
+	nfdchar_t *path = NULL;
+	
+	nfdresult_t result = NFD_OpenDialog(filter, NULL, &path);
+	
+	return "test.txt";
+}
+
+
+
+
+
+
