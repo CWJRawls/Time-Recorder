@@ -1,8 +1,6 @@
 /*
- 
  dialogs.mm
  Connor Rawls - 2016
- 
 */
 
 #include "dialogs.h"

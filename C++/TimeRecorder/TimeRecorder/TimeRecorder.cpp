@@ -26,17 +26,35 @@ string roster_filt = "txt"; //file type filter for opening roster files as well 
 
 string team_filt = "tme,txt"; //file type filter for opening and saving team time data
 
+string roster_file, team_file;
 
+
+vector<Swimmer> swimmer_list;
 
 //forward declare functions
-void post();
-void displayStartingOptions();
-void printOptionHelp();
+
+/* Functions for Starting Menu */
+void displayStartingOptions(); //displays the first menu when the user starts the program
+void printOptionHelp(); //used for getting information about individual options in the first menu
+string getRosterFile(); //used for obtaining the text file of the team roster to use
+void getandOpenTeamFile(); //used for obtaining the team file to be used
+void printVNum(); //function to print the version number
+
+/* Functions for Main Menu */
+void modifyTeam(); //function to view and modify swimmers/times
+void printMainOptions(); //print options for viewing/modifying swimmers/times
+void printSwimmerList(); //print an indexed list of swimmers
+
+/* Functions for Swimmer Menu */
+void swimmerMenu(Swimmer &s);//function for the menu level to modify a swimmer object
+
+/* Utility Functions */
 int getIntegerInput(); //function for type checked integer input from cin
 char getCharInput(); //function to get only the first char from cin
-void printVNum(); //function to print the version number
-string getRosterFile();
+bool confirmExit(); //function to confirm with the user that they would like to quit
 
+
+/* MAIN FUNCTION */
 int main()
 {
 	cout << "+====================================+\n";
@@ -47,15 +65,18 @@ int main()
 	{
 		displayStartingOptions();
 		char o = getCharInput();
-		std::string filename;
 		switch(o)
 		{
 			case '1':
-				filename = getRosterFile();
-				std::cout << filename;
+				roster_file = getRosterFile();
+				cout << roster_file;
+				readRosterFile(swimmer_list, roster_file);
+				cout << "\nList Size : " << swimmer_list.size();
+				sort(swimmer_list.begin(), swimmer_list.end());
+				modifyTeam();
 				break;
 			case '2':
-				//open an exoisting team
+				//open an existing team
 				break;
 			case '3':
 				printVNum();
@@ -64,10 +85,10 @@ int main()
 				printOptionHelp();
 				break;
 			case 'X':
-				end_run = true;
+				end_run = confirmExit();
 				break;
 			case 'x':
-				end_run = true;
+				end_run = confirmExit();
 				break;
 			default:
 				std::cout << "Unrecognized Command, try again";
@@ -79,13 +100,7 @@ int main()
 	return 1; //end of program
 }
 
-void post(string s)
-{
-	if(VERBOSE == 1)
-	{
-		cout << s;
-	}
-}
+/* UTILITY FUNCTIONS */
 
 int getIntegerInput()
 {
@@ -127,6 +142,24 @@ char getCharInput()
 	return char_in;
 }
 
+bool confirmExit()
+{
+	cout << "\nAre you sure you would like to exit? (y/n)\nAll unsaved data will be lost!\n";
+	char o = getCharInput();
+	
+	//only check for a positive response.
+	if(o == 'y' || o == 'Y')
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+/* STARTING FUNCTIONS */
+
 void displayStartingOptions()
 {
 	cout << "\n\nStart Options\n";
@@ -167,7 +200,80 @@ string getRosterFile()
 }
 
 
+/* MAIN MENU FUNCTIONS */
+
+void printMainOptions()
+{
+	cout << "\n\n1. Add a Swimmer\n2. Edit a Swimmer\n3. Delete a Swimmer\n4. Change Date\n5. Save\n6. Save As\nP. Print Swimmer List\n?. Reprint Options\nX. Exit to starting menu\n";
+}
+
+void printSwimmerList()
+{
+	if(swimmer_list.size() > 0)
+	{
+		cout << "\n\nSWIMMER LIST-----------------------\n";
+		for(int i = 0; i < swimmer_list.size(); i++)
+		{
+			int j = i + 1;
+			cout <<"\n" << j << ". ";
+			swimmer_list[i].printData();
+		}
+	}
+	else
+	{
+		cout << "\nNo Swimmers in List!";
+	}
+}
+
+void modifyTeam()
+{
+	bool exit = false;
+	//Print all relevant information to the console
+	printSwimmerList();
+	printMainOptions();
+	while(!exit)
+	{
+		//get char input from user
+		char o = getCharInput();
+	
+		//decide what to do with the input
+		switch(o)
+		{
+			case '1':
+			break;
+			case '2':
+			break;
+			case '3':
+			break;
+			case '4':
+			break;
+			case '5':
+			break;
+			case '6':
+			break;
+			case 'p':
+				printSwimmerList();
+				break;
+			case 'P':
+				printSwimmerList();
+				break;
+			case '?':
+				printMainOptions();
+				break;
+			case 'x':
+				exit = confirmExit();
+				break;
+			case 'X':
+				exit = confirmExit();
+				break;
+			default:
+				cout << "Unrecognized Command! Please Retry\n";
+				printMainOptions();
+				break;
+		}
+	}
+}
 
 
-
+/* SWIMMER MENU FUNCTIONS */
 

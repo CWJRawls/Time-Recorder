@@ -11,10 +11,10 @@ Connor Rawls - 2016
 
 
 //function to get and parse data from a file
-void readFile(std::vector<Swimmer> s, std::string filename);
+void readFile(std::vector<Swimmer> &s, std::string filename);
 
 //function to read a text document roster and create blank swimmers from it
-void readRosterFile(Swimmer* s, std::string filename);
+void readRosterFile(std::vector<Swimmer> &s, std::string filename);
 
 //function to write data out to a file
-void writeFile(Swimmer* s, int size, std::string filename);
+void writeFile(std::vector<Swimmer> &s, std::string filename);

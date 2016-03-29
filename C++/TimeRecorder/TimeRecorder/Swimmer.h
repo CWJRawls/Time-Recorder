@@ -38,10 +38,13 @@ class Swimmer{
 	//functions for sorting help
 	std::string getFName() const {return fname;}
 	std::string getLName() const {return lname;}
+	int getAge() const {return age;}
 	//function for printing data to the screen
 	void printData() {std::cout << lname << ", " << fname << " : " << age;}
-};
+	//overloaded operators for comparisons
+	friend bool operator<(const Swimmer &sa, const Swimmer &sb);
+	friend bool operator>(const Swimmer &sa, const Swimmer &sb);
 
-bool sortSwimmer(const Swimmer &sa, const Swimmer &sb);
+};
 
 #endif

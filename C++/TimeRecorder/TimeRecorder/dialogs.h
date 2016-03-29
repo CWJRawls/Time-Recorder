@@ -1,8 +1,6 @@
 /*
- 
 dialogs.h
 Connor Rawls - 2016
-
 */
 
 #ifndef __Dialogs

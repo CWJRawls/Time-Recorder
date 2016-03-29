@@ -46,21 +46,62 @@ void Swimmer::removeTime(int r) //remove a time and then sort
 	//post("Time Removed");
 }
 
-bool sortSwimmer(const Swimmer &sa, const Swimmer &sb)
+bool operator<(const Swimmer &sa, const Swimmer &sb)
 {
-	int a = sa.getLName().compare(sb.getLName());
-	
-	if(a < 0)
+	if(sa.getAge() < sb.getAge())
 	{
 		return true;
 	}
-	else if(a == 0)
+	else if(sa.getAge() == sb.getAge())
 	{
-		a = sa.getFName().compare(sb.getFName());
-		
-		if(a < 0)
+		if(sa.getLName().compare(sb.getLName()) > 0)
 		{
 			return true;
+		}
+		else if(sa.getLName().compare(sb.getLName()) == 0)
+		{
+			if(sa.getFName().compare(sb.getFName()) > 0)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool operator>(const Swimmer &sa, const Swimmer &sb)
+{
+	if(sa.getAge() > sb.getAge())
+	{
+		return true;
+	}
+	else if(sa.getAge() == sb.getAge())
+	{
+		if(sa.getLName().compare(sb.getLName()) < 0)
+		{
+			return true;
+		}
+		else if(sa.getLName().compare(sb.getLName()) == 0)
+		{
+			if(sa.getFName().compare(sb.getFName()) < 0)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 		else
 		{
