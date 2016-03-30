@@ -54,13 +54,13 @@ bool operator<(const Swimmer &sa, const Swimmer &sb)
 	}
 	else if(sa.getAge() == sb.getAge())
 	{
-		if(sa.getLName().compare(sb.getLName()) > 0)
+		if(sa.getLName().compare(sb.getLName()) < 0)
 		{
 			return true;
 		}
 		else if(sa.getLName().compare(sb.getLName()) == 0)
 		{
-			if(sa.getFName().compare(sb.getFName()) > 0)
+			if(sa.getFName().compare(sb.getFName()) < 0)
 			{
 				return true;
 			}

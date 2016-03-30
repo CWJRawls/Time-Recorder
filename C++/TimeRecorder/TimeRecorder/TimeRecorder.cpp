@@ -44,14 +44,18 @@ void printVNum(); //function to print the version number
 void modifyTeam(); //function to view and modify swimmers/times
 void printMainOptions(); //print options for viewing/modifying swimmers/times
 void printSwimmerList(); //print an indexed list of swimmers
+void findAndOpenSwimmer(); //ask for an index number and move to the menu for modifying that swimmer
+void addSwimmer(); //function for adding a new Swimmer to the list while asking the user for string input
 
 /* Functions for Swimmer Menu */
-void swimmerMenu(Swimmer &s);//function for the menu level to modify a swimmer object
+void swimmerMenu(int s);//function for the menu level to modify a swimmer object
 
 /* Utility Functions */
 int getIntegerInput(); //function for type checked integer input from cin
 char getCharInput(); //function to get only the first char from cin
+string getStringInput();//function to get the whole line w/o newline char from cin
 bool confirmExit(); //function to confirm with the user that they would like to quit
+
 
 
 /* MAIN FUNCTION */
@@ -142,6 +146,19 @@ char getCharInput()
 	return char_in;
 }
 
+string getStringInput()
+{
+	string input = "";
+	getline(cin, input);
+	while(input.length() == 0) //detect user just hitting enter
+	{
+		cout << "Nothing received, please try again";
+		getline(cin, input);
+	}
+	
+	return input;
+}
+
 bool confirmExit()
 {
 	cout << "\nAre you sure you would like to exit? (y/n)\nAll unsaved data will be lost!\n";
@@ -218,6 +235,7 @@ void printSwimmerList()
 			cout <<"\n" << j << ". ";
 			swimmer_list[i].printData();
 		}
+		cout << "\n";
 	}
 	else
 	{
@@ -240,9 +258,11 @@ void modifyTeam()
 		switch(o)
 		{
 			case '1':
-			break;
+				addSwimmer();
+				break;
 			case '2':
-			break;
+				findAndOpenSwimmer();
+				break;
 			case '3':
 			break;
 			case '4':
@@ -275,5 +295,56 @@ void modifyTeam()
 }
 
 
+void findAndOpenSwimmer()
+{
+	cout << "\nEnter the number of the Swimmer to modify:\n";
+	int c = getIntegerInput();
+	c -= 1;
+	
+	if(c >= swimmer_list.size() || c < 0)
+	{
+		cout << "\nError!\nNumber Entered Does not match any swimmers!\n";
+	}
+	else
+	{
+		swimmerMenu(c);
+	}
+}
+
+void addSwimmer()
+{
+	cout << "\n\n ADDING A SWIMMER:\n\nPlease enter the swimmer's first name:\n";
+	string f = getStringInput();
+	if(f.length() == 1 && f.compare("0") == 0)
+	{
+		//break out of the function
+		cout << "\nFunction escape code found! Returning to menu.\n";
+	}
+	else //continue as normal
+	{
+		cout << "\nPlease enter the swimmer's last name:\n";
+		string l = getStringInput();
+		cout << "\nPlease enter the swimmer's age:\n";
+		int a = getIntegerInput();
+	
+		Swimmer temp(f, l, a);
+	
+		swimmer_list.push_back(temp);
+	
+		cout << "\nAdded " << f << " " << l << " to the list\n";
+		
+		sort(swimmer_list.begin(), swimmer_list.end());
+		printSwimmerList();
+	}
+}
+
+
 /* SWIMMER MENU FUNCTIONS */
 
+void swimmerMenu(int s)
+{
+	Swimmer & swim = swimmer_list[s]; //get a reference to the object we want to change
+	
+	swim.printData();
+	//do stuff to the swimmer object
+}

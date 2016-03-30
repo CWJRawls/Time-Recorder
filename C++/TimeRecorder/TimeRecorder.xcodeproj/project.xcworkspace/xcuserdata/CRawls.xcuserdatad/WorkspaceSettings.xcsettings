@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>BuildLocationStyle</key>
-	<string>CustomLocation</string>
+	<string>UseAppPreferences</string>
 	<key>CustomBuildIntermediatesPath</key>
-	<string>/Users/CRawls/Documents/Time-Recorder/C++/Binaries</string>
+	<string>/Users/CRawls/Library/Developer/Xcode/DerivedData</string>
 	<key>CustomBuildLocationType</key>
 	<string>Absolute</string>
 	<key>CustomBuildProductsPath</key>
