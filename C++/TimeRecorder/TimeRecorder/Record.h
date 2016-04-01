@@ -40,12 +40,14 @@ class Record{
 	int cMili() {return milis;}
 	//functions for data presentation
 	void printData();
-	//function to present time as a string for file storage
+	//functions to present time as a string for timesheets
 	std::string getTime() {return time;}
 	std::string getDate() {return date;}
 	std::string getEvent() {return event;}
 	std::string getStroke() {return stroke;}
-	std::string getDist() {return distance;};
+	std::string getDist() {return distance;}
+	//function for saving data into file
+	std::string getSaveData();
 	//Operators
 	friend bool operator<(const Record &ra, const Record &rb)
 	{

@@ -231,6 +231,25 @@ void Record::printData()
 		std::cout << event << "\t" << time << "\t" << date;
 	}
 }
+
+/*function to return the value of the record as a string in the format of:
+ integer stroke|integer distance|string time|string date
+ */
+std::string Record::getSaveData()
+{
+	std::string output = "";
+	output += e;
+	output += "|";
+	output += d;
+	output += "|";
+	output += time;
+	output += "|";
+	output += date;
+	
+	return output;
+	
+}
+
 /*
 //Operators
 bool Record::operator<(<#const Record &rb#>) //operator to help vector sorting of times

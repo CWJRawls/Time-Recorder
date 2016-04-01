@@ -28,6 +28,8 @@ string team_filt = "tme,txt"; //file type filter for opening and saving team tim
 
 string roster_file, team_file;
 
+string date = "01/01/1970";
+
 
 vector<Swimmer> swimmer_list;
 
@@ -46,6 +48,10 @@ void printMainOptions(); //print options for viewing/modifying swimmers/times
 void printSwimmerList(); //print an indexed list of swimmers
 void findAndOpenSwimmer(); //ask for an index number and move to the menu for modifying that swimmer
 void addSwimmer(); //function for adding a new Swimmer to the list while asking the user for string input
+void removeSwimmer(); //function for removing a Swimmer from the list.
+void printDate(); //function to print the current date
+void changeDate(); //function to change the current date;
+string getSaveFileName(); //temporary function on OS X to get around uneditable text field issue when saving.
 
 /* Functions for Swimmer Menu */
 void swimmerMenu(int s);//function for the menu level to modify a swimmer object
@@ -73,14 +79,19 @@ int main()
 		{
 			case '1':
 				roster_file = getRosterFile();
+				team_file = roster_file.substr(0,roster_file.length() - 3);
+				team_file += "tme";
 				cout << roster_file;
 				readRosterFile(swimmer_list, roster_file);
-				cout << "\nList Size : " << swimmer_list.size();
 				sort(swimmer_list.begin(), swimmer_list.end());
 				modifyTeam();
 				break;
 			case '2':
-				//open an existing team
+				team_file = getRosterFile();
+				cout << team_file;
+				readFile(swimmer_list, team_file);
+				sort(swimmer_list.begin(), swimmer_list.end());
+				modifyTeam();
 				break;
 			case '3':
 				printVNum();
@@ -221,7 +232,7 @@ string getRosterFile()
 
 void printMainOptions()
 {
-	cout << "\n\n1. Add a Swimmer\n2. Edit a Swimmer\n3. Delete a Swimmer\n4. Change Date\n5. Save\n6. Save As\nP. Print Swimmer List\n?. Reprint Options\nX. Exit to starting menu\n";
+	cout << "\n\n1. Add a Swimmer\n2. Edit a Swimmer\n3. Delete a Swimmer\n4. Change Date\n5. Save\n6. Save As\nD. Print Date\nP. Print Swimmer List\n?. Reprint Options\nX. Exit to starting menu\n";
 }
 
 void printSwimmerList()
@@ -245,6 +256,9 @@ void printSwimmerList()
 
 void modifyTeam()
 {
+	std::string path = "";
+	cout << "\n\nPlease enter the date for times being entered (mm/dd/yyyy)\n";
+	date = getStringInput();
 	bool exit = false;
 	//Print all relevant information to the console
 	printSwimmerList();
@@ -264,13 +278,29 @@ void modifyTeam()
 				findAndOpenSwimmer();
 				break;
 			case '3':
-			break;
+				removeSwimmer();
+				break;
 			case '4':
-			break;
+				changeDate();
+				break;
 			case '5':
-			break;
+				cout << "\nNow Saving....\n";
+				writeTeamFile(swimmer_list, team_file);
+				break;
 			case '6':
-			break;
+				path = getSaveFileName();
+				path = getSavePath(team_file);
+				if(path.compare("none") == 0)
+					break;
+				writeTeamFile(swimmer_list, path);
+				printMainOptions();
+				break;
+			case 'd':
+				printDate();
+				break;
+			case 'D':
+				printDate();
+				break;
 			case 'p':
 				printSwimmerList();
 				break;
@@ -313,7 +343,7 @@ void findAndOpenSwimmer()
 
 void addSwimmer()
 {
-	cout << "\n\n ADDING A SWIMMER:\n\nPlease enter the swimmer's first name:\n";
+	cout << "\n\nADDING A SWIMMER:\n\nPlease enter the swimmer's first name:\n";
 	string f = getStringInput();
 	if(f.length() == 1 && f.compare("0") == 0)
 	{
@@ -338,6 +368,82 @@ void addSwimmer()
 	}
 }
 
+void removeSwimmer()
+{
+	cout << "\nREMOVING A SWIMMER\n\nPlease enter the index of the swimmer to remove. Enter 0 to cancel\n";
+	int index = getIntegerInput();
+	index -= 1;
+	
+	if(index < 0)
+	{
+		cout << "\nOperation cancelled, returning to menu\n";
+		printMainOptions();
+	}
+	else if(index > swimmer_list.size() - 1)
+	{
+		cout << "\nInvalid input, returning to menu\n";
+		printMainOptions();
+	}
+	else
+	{
+		//confirm user intent to delete data
+		cout << "You are erasing : ";
+		swimmer_list[index].printData();
+		cout << "\nAre you sure? (y/n)\t";
+		//wait for confirmation input
+		char o = getCharInput();
+		
+		//delete if confirmed
+		if(o == 'y' || o == 'Y')
+		{
+			swimmer_list.erase(swimmer_list.begin() + index);
+			cout << "\nSwimmer erased.\n";
+			printSwimmerList();
+		}
+		else
+		{
+			cout << "\nSwimmer delete cancelled.\n";
+		}
+		
+	}
+}
+
+void printDate()
+{
+	cout << "\nCurrent date in use: " << date << "\n";
+}
+
+void changeDate()
+{
+	cout << "\nCHANGING DATE\nPlease enter a new date (mm/dd/yyyy)\n";
+	date = getStringInput();
+	cout << "\nDate set to: " << date << "\n";
+}
+
+string getSaveFileName()
+{
+	int start = team_file.length();
+	int end = team_file.length() - 4;
+	while(team_file[start - 1] != '/' && start > -1)
+	{start--;}
+	int npos = end - start;
+	cout << "\nfirst slash at " << start << " period at " << end;
+	cout << "\nCurrent file name is " << team_file.substr(start, npos);
+	cout << "\nWould you like to change the file name? (y/n)\n";
+	char c = getCharInput();
+	string output = team_file;
+	if(c == 'y' || c == 'Y')
+	{
+		cout << "\nPlease Enter the new name\n";
+		output = getStringInput();
+		output += ".tme";
+		
+		team_file = team_file.substr(0,start);
+		team_file += output;
+	}
+	
+	return team_file;
+}
 
 /* SWIMMER MENU FUNCTIONS */
 

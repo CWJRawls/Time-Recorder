@@ -46,6 +46,43 @@ void Swimmer::removeTime(int r) //remove a time and then sort
 	//post("Time Removed");
 }
 
+bool Swimmer::hasTime(int t) //safeguard function to check that the index exists
+{
+	if(t < 0 || t >= times.size())
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+Record Swimmer::getTime(int t) //get a copy of a time if it exists. If the index does not exist, returns blank record.
+{
+	if(t < 0 || t >= times.size())
+	{
+		Record r(1,1,"00:00.00","01/01/1970");
+		return r;
+	}
+	else
+	{
+		return times[t];
+	}
+}
+
+std::string Swimmer::getSaveData()
+{
+	//create and assemble an output string that matches the format fname|lname|age
+	std::string output = fname;
+	output += "|";
+	output += lname;
+	output += "|";
+	output += std::to_string(age);
+	
+	return output;
+}
+
 bool operator<(const Swimmer &sa, const Swimmer &sb)
 {
 	if(sa.getAge() < sb.getAge())

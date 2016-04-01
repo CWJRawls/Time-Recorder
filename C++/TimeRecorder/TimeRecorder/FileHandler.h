@@ -17,4 +17,4 @@ void readFile(std::vector<Swimmer> &s, std::string filename);
 void readRosterFile(std::vector<Swimmer> &s, std::string filename);
 
 //function to write data out to a file
-void writeFile(std::vector<Swimmer> &s, std::string filename);
+void writeTeamFile(std::vector<Swimmer> &s, std::string filename);

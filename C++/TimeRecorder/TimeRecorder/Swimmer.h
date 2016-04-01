@@ -35,6 +35,8 @@ class Swimmer{
 	void addTime(Record r); //add a time to the swimmer
 	void removeTime(int r); //remove a time from the list
 	int getNumTimes() {return times.size();} //function to get the number of times for writing to files
+	bool hasTime(int t); //function to check if an index exists.
+	Record getTime(int t);//function to get a copy of the requested record
 	//functions for sorting help
 	std::string getFName() const {return fname;}
 	std::string getLName() const {return lname;}
@@ -44,6 +46,8 @@ class Swimmer{
 	//overloaded operators for comparisons
 	friend bool operator<(const Swimmer &sa, const Swimmer &sb);
 	friend bool operator>(const Swimmer &sa, const Swimmer &sb);
+	//function for getting formatted data for writing to a file
+	std::string getSaveData();
 
 };
 
