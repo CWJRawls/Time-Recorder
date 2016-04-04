@@ -52,9 +52,13 @@ void removeSwimmer(); //function for removing a Swimmer from the list.
 void printDate(); //function to print the current date
 void changeDate(); //function to change the current date;
 string getSaveFileName(); //temporary function on OS X to get around uneditable text field issue when saving.
+void clearData(); //function to remove data before exiting to starting menu
+void changeSortOrder(); //function to change the basis of swimmer sorting
 
 /* Functions for Swimmer Menu */
 void swimmerMenu(int s);//function for the menu level to modify a swimmer object
+void printSwimmerData(Swimmer &s);
+void printSwimmerMenu();
 
 /* Utility Functions */
 int getIntegerInput(); //function for type checked integer input from cin
@@ -232,7 +236,7 @@ string getRosterFile()
 
 void printMainOptions()
 {
-	cout << "\n\n1. Add a Swimmer\n2. Edit a Swimmer\n3. Delete a Swimmer\n4. Change Date\n5. Save\n6. Save As\nD. Print Date\nP. Print Swimmer List\n?. Reprint Options\nX. Exit to starting menu\n";
+	cout << "\n\n1. Add a Swimmer\n2. Edit a Swimmer\n3. Delete a Swimmer\n4. Change Date\n5. Save\n6. Save As\nD. Print Date\nP. Print Swimmer List\nS. Change Sorting Order\n?. Reprint Options\nX. Exit to starting menu\n";
 }
 
 void printSwimmerList()
@@ -307,6 +311,12 @@ void modifyTeam()
 			case 'P':
 				printSwimmerList();
 				break;
+			case 's':
+				changeSortOrder();
+				break;
+			case 'S':
+				changeSortOrder();
+				break;
 			case '?':
 				printMainOptions();
 				break;
@@ -322,6 +332,8 @@ void modifyTeam()
 				break;
 		}
 	}
+	//clear the swimmer list.
+	clearData();
 }
 
 
@@ -427,11 +439,10 @@ string getSaveFileName()
 	while(team_file[start - 1] != '/' && start > -1)
 	{start--;}
 	int npos = end - start;
-	cout << "\nfirst slash at " << start << " period at " << end;
 	cout << "\nCurrent file name is " << team_file.substr(start, npos);
 	cout << "\nWould you like to change the file name? (y/n)\n";
 	char c = getCharInput();
-	string output = team_file;
+	string output = "";
 	if(c == 'y' || c == 'Y')
 	{
 		cout << "\nPlease Enter the new name\n";
@@ -445,12 +456,151 @@ string getSaveFileName()
 	return team_file;
 }
 
+//function to remove all data from storage before closing the file to avoid it being maintained in future files.
+void clearData()
+{
+	vector<Swimmer> temp;
+	swimmer_list.swap(temp);
+}
+
+void changeSortOrder()
+{
+	bool exit = false;
+	
+	while(!exit)
+	{
+		cout << "\n\nChanging Sorting Order\n\nChoose the primary sorting criteria:\n1 - Age 2 - Name 3 - Has Times\n";
+		int p = getIntegerInput();
+	
+		while(p < 1 || p > 3)
+		{
+			cout <<"\nPlease enter a number 1 - 3\n";
+			p = getIntegerInput();
+		}
+	
+		p--;
+		
+		Swimmer::sortPrime = p;
+		
+		cout << "\nChoose the secondary sorting criteria:\n1 - Age 2 - Name 3 - Has Times\n";
+		int s = getIntegerInput();
+	
+		while(s < 1 || s > 3)
+		{
+			cout <<"\nPlease enter a number 1 - 3\n";
+			s = getIntegerInput();
+		}
+	
+		s--;
+		
+		Swimmer::sortSecondary = s;
+	
+		cout << "\nChoose the tertiary sorting criteria:\n1 - Age 2 - Name 3 - Has Times\n";
+		int t = getIntegerInput();
+	
+		while(t < 1 || t > 3)
+		{
+			cout <<"\nPlease enter a number 1 - 3\n";
+			t = getIntegerInput();
+		}
+	
+		t--;
+	
+		Swimmer::sortTertiary = t;
+		
+		cout << "\nPrimary Sort Method: ";
+		
+		switch(Swimmer::sortPrime)
+		{
+			case 0:
+				cout << "Age\n";
+				break;
+			case 1:
+				cout << "Name\n";
+				break;
+			case 2:
+				cout << "Has Times\n";
+				break;
+		}
+		
+		cout << "Secondary Sort Method: ";
+		
+		switch(Swimmer::sortSecondary)
+		{
+			case 0:
+				cout << "Age\n";
+				break;
+			case 1:
+				cout << "Name\n";
+				break;
+			case 2:
+				cout << "Has Times\n";
+				break;
+		}
+		
+		cout << "Tertiary Sort Method: ";
+		
+		switch(Swimmer::sortTertiary)
+		{
+			case 0:
+				cout << "Age\n";
+				break;
+			case 1:
+				cout << "Name\n";
+				break;
+			case 2:
+				cout << "Has Times\n";
+				break;
+		}
+		
+		cout << "Is this correct? (y/n)\n";
+		char o = getCharInput();
+		
+		if(o == 'y' || o == 'Y')
+			exit = true;
+		
+	}
+	
+	sort(swimmer_list.begin(), swimmer_list.end());
+	
+	printSwimmerList();
+	cout << "\n\n";
+	printMainOptions();
+	
+}
+
 /* SWIMMER MENU FUNCTIONS */
 
 void swimmerMenu(int s)
 {
-	Swimmer & swim = swimmer_list[s]; //get a reference to the object we want to change
+	printSwimmerData(swimmer_list[s]);
+	printSwimmerMenu();
+}
+
+void printSwimmerData(Swimmer &s)
+{
+	cout << "\nSwimmer Data:\n";
+	s.printData();
+	cout << "\nTimes:\n";
+	if(s.getNumTimes() > 0)
+	{
+		int i;
+		
+		for(i = 0; i < s.getNumTimes(); i++)
+		{
+			cout << to_string(i) << ". ";
+			s.getTime(i).printData();
+			cout << "\n";
+		}
+	}
+	else
+	{
+		cout << "No Times\n";
+	}
 	
-	swim.printData();
-	//do stuff to the swimmer object
+}
+
+void printSwimmerMenu()
+{
+	cout << "\nSwimmer Menu:\n1. Add A Time\n2. Edit A Time\n3. Remove A Time\n4. Change Name\n5. Change Age\nC. Change Swimmer\nX.Close Swimmer\n";
 }

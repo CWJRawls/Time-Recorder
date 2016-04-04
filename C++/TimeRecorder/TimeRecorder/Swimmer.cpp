@@ -5,6 +5,12 @@ Connor Rawls - 2016
 
 #include "Swimmer.h"
 
+
+//definition of static data members
+int Swimmer::sortPrime = Swimmer::sortAge;
+int Swimmer::sortSecondary = Swimmer::sortName;
+int Swimmer::sortTertiary = Swimmer::sortRecord;
+
 Swimmer::Swimmer(std::string f, std::string l) //constructor 1
 {
 	fname = f;
@@ -71,6 +77,21 @@ Record Swimmer::getTime(int t) //get a copy of a time if it exists. If the index
 	}
 }
 
+void Swimmer::printData()
+{
+	std::cout << lname << ", " << fname;
+	
+	int chars = lname.length() + fname.length() + 2;
+	
+	while(chars < 29)
+	{
+		std::cout << "\t";
+		chars += 4;
+	}
+	
+	std::cout <<" : " << age;
+}
+
 std::string Swimmer::getSaveData()
 {
 	//create and assemble an output string that matches the format fname|lname|age
@@ -85,68 +106,105 @@ std::string Swimmer::getSaveData()
 
 bool operator<(const Swimmer &sa, const Swimmer &sb)
 {
-	if(sa.getAge() < sb.getAge())
+	int outcome;
+	switch(Swimmer::sortPrime)
 	{
-		return true;
-	}
-	else if(sa.getAge() == sb.getAge())
-	{
-		if(sa.getLName().compare(sb.getLName()) < 0)
-		{
-			return true;
-		}
-		else if(sa.getLName().compare(sb.getLName()) == 0)
-		{
-			if(sa.getFName().compare(sb.getFName()) < 0)
-			{
-				return true;
-			}
-			else
-			{
+		case 0:
+			outcome = sa.getAge() - sb.getAge();
+			if(outcome > 0)
 				return false;
-			}
-		}
-		else
-		{
-			return false;
-		}
-	}
-	else
-	{
-		return false;
-	}
-}
-
-bool operator>(const Swimmer &sa, const Swimmer &sb)
-{
-	if(sa.getAge() > sb.getAge())
-	{
-		return true;
-	}
-	else if(sa.getAge() == sb.getAge())
-	{
-		if(sa.getLName().compare(sb.getLName()) < 0)
-		{
-			return true;
-		}
-		else if(sa.getLName().compare(sb.getLName()) == 0)
-		{
-			if(sa.getFName().compare(sb.getFName()) < 0)
-			{
+			else if(outcome < 0)
 				return true;
-			}
-			else
-			{
+			break;
+		case 1:
+			outcome = sa.getLName().compare(sb.getLName());
+			if (outcome > 0)
 				return false;
+			else if(outcome == 0)
+			{
+				outcome = sa.getFName().compare(sb.getFName());
+				
+				if(outcome > 0)
+					return false;
+				else if(outcome < 0)
+					return true;
 			}
-		}
-		else
-		{
-			return false;
-		}
+			else if(outcome < 0)
+				return true;
+			break;
+		case 2:
+			if(sb.numberOfTimes() == 0 && sa.numberOfTimes() != 0)
+				return true;
+			else if(sa.numberOfTimes() == 0 && sb.numberOfTimes() != 0)
+				return false;
+			break;
 	}
-	else
+	
+	switch(Swimmer::sortSecondary)
 	{
-		return false;
+		case 0:
+			outcome = sa.getAge() - sb.getAge();
+			if(outcome > 0)
+				return false;
+			else if(outcome < 0)
+				return true;
+			break;
+		case 1:
+			outcome = sa.getLName().compare(sb.getLName());
+			if (outcome > 0)
+				return false;
+			else if(outcome == 0)
+			{
+				outcome = sa.getFName().compare(sb.getFName());
+				
+				if(outcome > 0)
+					return false;
+				else if(outcome < 0)
+					return true;
+			}
+			else if(outcome < 0)
+				return true;
+			break;
+		case 2:
+			if(sb.numberOfTimes() == 0 && sa.numberOfTimes() != 0)
+				return true;
+			else if(sa.numberOfTimes() == 0 && sb.numberOfTimes() != 0)
+				return false;
+			break;
 	}
+	
+	switch(Swimmer::sortTertiary)
+	{
+		case 0:
+			outcome = sa.getAge() - sb.getAge();
+			if(outcome > 0)
+				return false;
+			else if(outcome < 0)
+				return true;
+			break;
+		case 1:
+			outcome = sa.getLName().compare(sb.getLName());
+			if (outcome > 0)
+				return false;
+			else if(outcome == 0)
+			{
+				outcome = sa.getFName().compare(sb.getFName());
+				
+				if(outcome > 0)
+					return false;
+				else if(outcome < 0)
+					return true;
+			}
+			else if(outcome < 0)
+				return true;
+			break;
+		case 2:
+			if(sb.numberOfTimes() == 0 && sa.numberOfTimes() != 0)
+				return true;
+			else if(sa.numberOfTimes() == 0 && sb.numberOfTimes() != 0)
+				return false;
+			break;
+	}
+	
+	return false;
 }

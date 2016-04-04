@@ -26,6 +26,14 @@ class Swimmer{
 	void sortTimes(); //function to sort the times by event/time if there are any
 	
 	public:
+	//sorting control values
+	static int sortPrime; //determines what is the primary sorting criteria
+	static int sortSecondary; //determines what is the secondary sorting criteria
+	static int sortTertiary; //determines what is the tertiary sorting criteria
+	static const int sortAge = 0;
+	static const int sortName = 1;
+	static const int sortRecord = 2;
+	
 	Swimmer(std::string f, std::string l); //constructor
 	Swimmer(std::string f, std::string l, int a); //alternate constructor
 	
@@ -41,14 +49,17 @@ class Swimmer{
 	std::string getFName() const {return fname;}
 	std::string getLName() const {return lname;}
 	int getAge() const {return age;}
+	int numberOfTimes() const {return times.size();}
 	//function for printing data to the screen
-	void printData() {std::cout << lname << ", " << fname << " : " << age;}
+	void printData();
 	//overloaded operators for comparisons
 	friend bool operator<(const Swimmer &sa, const Swimmer &sb);
-	friend bool operator>(const Swimmer &sa, const Swimmer &sb);
+	friend bool operator>(const Swimmer &sa, const Swimmer &sb) {return sb < sa;}
 	//function for getting formatted data for writing to a file
 	std::string getSaveData();
 
 };
+
+
 
 #endif

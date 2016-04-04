@@ -70,11 +70,8 @@ void readFile(std::vector<Swimmer> &s, std::string filename)
 	std::ifstream file_in(filename);
 	std::string line,info,fname,lname,age;
 	Swimmer swim("temp" , "temp", 0);
-	int i = 0;
 	while(std::getline(file_in, line))
 	{
-		std::cout << "\nPass: " << i;
-		i++;
 		
 		//create a new Swimmer object
 		if(line.compare("Swimmer") == 0)
@@ -158,6 +155,43 @@ void readFile(std::vector<Swimmer> &s, std::string filename)
 			s.push_back(swim);
 			std::cout << "\nList Size: " << s.size();
 		}
+		//check for sorting preferences
+		else if(line.compare("Sorting") == 0)
+		{
+			std::getline(file_in, line);
+			int i = 0, k = 0;
+			std::string p,s,t; //strings to hold data about sorting order
+			
+			while(i < line.length())
+			{
+				//check for bad characters and add to correct string
+				if(line[i] != '|')
+				{
+					switch(k)
+					{
+						case 0:
+							p += line[i];
+							break;
+						case 1:
+							s += line[i];
+							break;
+						case 2:
+							t += line[i];
+							break;
+					}
+				}
+				else if(line[i] == '|')
+				{
+					k++;
+				}
+				
+				i++;
+			}
+			
+			Swimmer::sortPrime = stoi(p);
+			Swimmer::sortSecondary = stoi(s);
+			Swimmer::sortTertiary = stoi(t);
+		}
 	}
 	//close the file
 	file_in.close();
@@ -185,6 +219,9 @@ void writeTeamFile(std::vector<Swimmer> &s, std::string filename)
 		}
 		
 	}
+	//write sorting preferences to file
+	file_out << "Sorting\n";
+	file_out << std::to_string(Swimmer::sortPrime) << "|" << std::to_string(Swimmer::sortSecondary) << "|" << std::to_string(Swimmer::sortTertiary) << "\n";
 	
 	std::cout << "\nFile save complete!\n";
 	
